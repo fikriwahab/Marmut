@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <h2>Dashboard</h2>
+    <ul class="list-group">
+        <li class="list-group-item">Nama: John Doe</li>
+        <li class="list-group-item">Email: john@example.com</li>
+        <li class="list-group-item">Kota Asal: Jakarta</li>
+        <li class="list-group-item">Gender: Laki-laki</li>
+        <li class="list-group-item">Tempat Lahir: Jakarta</li>
+        <li class="list-group-item">Tanggal Lahir: 1990-01-01</li>
+        <li class="list-group-item">Role: Pengguna Biasa</li>
+    </ul>
+
+    <h3>Daftar Playlist</h3>
+    <ul class="list-group">
+        <li class="list-group-item">Belum Memiliki Playlist</li>
+    </ul>
+    
+    <!--
+    {% comment %}
+    {% elif user.role == 'artist' or user.role == 'songwriter' %}
+        <h3>Daftar Lagu</h3>
+        <ul class="list-group">
+            <li class="list-group-item">Belum Memiliki Lagu</li>
+        </ul>
+    {% elif user.role == 'podcaster' %}
+        <h3>Daftar Podcast</h3>
+        <ul class="list-group">
+            <li class="list-group-item">Belum Memiliki Podcast</li>
+        </ul>
+    {% elif user.role == 'label' %}
+        <h3>Daftar Album</h3>
+        <ul class="list-group">
+            <li class="list-group-item">Belum Memproduksi Album</li>
+        </ul>
+    {% endcomment %}
+    -->
+</div>
+{% endblock %}

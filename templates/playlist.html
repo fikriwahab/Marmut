@@ -1,0 +1,154 @@
+{% extends 'base.html' %} {% block content %}
+<div class="container mt-5">
+  <h2>Kelola Playlist</h2>
+  <div id="user-playlist">
+    <p>Anda Belum Memiliki Playlist</p>
+  </div>
+
+  <button
+    type="button"
+    class="btn btn-primary mt-3"
+    data-toggle="modal"
+    data-target="#addPlaylistModal"
+  >
+    Tambah Playlist
+  </button>
+
+  <!-- Modal -->
+  <div
+    class="modal fade"
+    id="addPlaylistModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="addPlaylistModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content playlist-modal">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addPlaylistModalLabel">
+            Tambah Playlist
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="addPlaylistForm">
+            <div class="form-group">
+              <label for="playlistName">Judul:</label>
+              <input
+                type="text"
+                class="form-control"
+                id="playlistName"
+                name="playlistName"
+              />
+            </div>
+            <div class="form-group">
+              <label for="playlistDescription">Deskripsi:</label>
+              <textarea
+                class="form-control"
+                id="playlistDescription"
+                name="playlistDescription"
+              ></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Dummy data for playlists
+    var playlists = [
+      { id: 1, nama: "Playlist1", jumlahLagu: 0, totalDurasi: "0 menit" },
+      { id: 2, nama: "Playlist2", jumlahLagu: 2, totalDurasi: "4 menit" },
+    ];
+
+    // Function to render playlists
+    function renderPlaylists() {
+      var userPlaylist = document.getElementById("user-playlist");
+      if (playlists.length > 0) {
+        var playlistHTML =
+          "<table class='table music-table'><thead><tr><th>Judul</th><th>Jumlah Lagu</th><th>Total Durasi</th><th>Action</th></tr></thead><tbody>";
+        playlists.forEach(function (playlist) {
+          playlistHTML +=
+            "<tr><td>" +
+            playlist.nama +
+            "</td><td>" +
+            playlist.jumlahLagu +
+            "</td><td>" +
+            playlist.totalDurasi +
+            "</td><td><a href='#' class='playlist-detail' data-id='" +
+            playlist.id +
+            "'>Detail</a> | <a href='#' class='playlist-edit' data-id='" +
+            playlist.id +
+            "'>Ubah</a> | <a href='#' class='playlist-delete' data-id='" +
+            playlist.id +
+            "'>Hapus</a></td></tr>";
+        });
+        playlistHTML += "</tbody></table>";
+        userPlaylist.innerHTML = playlistHTML;
+      } else {
+        userPlaylist.innerHTML = "<p>Anda Belum Memiliki Playlist</p>";
+      }
+    }
+
+    // Initial rendering of playlists
+    renderPlaylists();
+
+    // JavaScript code for adding a new playlist
+    document
+      .getElementById("addPlaylistForm")
+      .addEventListener("submit", function (event) {
+        event.preventDefault();
+        var playlistName = document.getElementById("playlistName").value;
+        var playlistDescription = document.getElementById(
+          "playlistDescription"
+        ).value;
+        var newPlaylist = {
+          id: playlists.length + 1,
+          nama: playlistName,
+          jumlahLagu: 0,
+          totalDurasi: "0 menit",
+        };
+        playlists.push(newPlaylist);
+        renderPlaylists();
+        $("#addPlaylistModal").modal("hide");
+      });
+  });
+  // Attach event listeners for playlist actions
+  document.addEventListener("click", function (event) {
+    if (event.target.classList.contains("playlist-detail")) {
+      event.preventDefault();
+      var currentBaseUrl = window.location.origin;
+      var testUrl = currentBaseUrl + "/playlist/details";
+      window.location.href = testUrl;
+    }
+    if (event.target.classList.contains("playlist-edit")) {
+      event.preventDefault();
+      var playlistId = event.target.getAttribute("data-id");
+      alert("Edit action for playlist with ID " + playlistId);
+    }
+    if (event.target.classList.contains("playlist-delete")) {
+      event.preventDefault();
+      var playlistId = event.target.getAttribute("data-id");
+      var index = playlists.findIndex(function (playlist) {
+        return playlist.id === parseInt(playlistId);
+      });
+      if (index !== -1) {
+        playlists.splice(index, 1);
+        renderPlaylists();
+      }
+    }
+  });
+</script>
+{% endblock %}

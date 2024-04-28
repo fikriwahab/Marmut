@@ -1,0 +1,160 @@
+{% extends 'base.html' %} {% block content %}
+<div class="container mt-5">
+  <h2>Playlist Detail</h2>
+  <div class="card playlist-card">
+    <div class="card-body">
+      <h5 class="card-title">Playlist Information</h5>
+      <p class="card-text">Judul: Playlist1</p>
+      <p class="card-text">Jumlah Lagu: 5</p>
+      <p class="card-text">Total Durasi: 15 menit</p>
+      <a
+        href="#"
+        class="btn btn-primary"
+        data-toggle="modal"
+        data-target="#tambahLaguModal"
+        >Tambah Lagu</a
+      >
+    </div>
+  </div>
+  <div class="card playlist-card mt-3">
+    <div class="card-body">
+      <h5 class="card-title">List of Songs</h5>
+      <table class="table music-table">
+        <thead>
+          <tr>
+            <th>Judul Lagu</th>
+            <th>Oleh</th>
+            <th>Durasi</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="songList">
+          <!-- Songs will be dynamically added here -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Tambah Lagu Modal -->
+<div
+  class="modal fade"
+  id="tambahLaguModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="tambahLaguModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content playlist-modal">
+      <div class="modal-header">
+        <h5 class="modal-title" id="tambahLaguModalLabel">TAMBAH LAGU</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="tambahLaguForm">
+          <div class="form-group">
+            <label for="laguDropdown">Lagu:</label>
+            <select class="form-control" id="laguDropdown">
+              <!-- Dummy data for songs -->
+              <option>Judul Lagu 1 - Nama Artis 1</option>
+              <option>Judul Lagu 2 - Nama Artis 2</option>
+              <!-- Add more dummy songs here if needed -->
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
+        <button type="button" id="submitSongButton" class="btn btn-primary">
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  // Dummy data for songs
+  var songs = [
+    { title: "Song 1", artist: "Artist 1", duration: "3 menit" },
+    { title: "Song 2", artist: "Artist 2", duration: "4 menit" },
+    // Add more dummy songs here if needed
+  ];
+
+  // JavaScript code for handling song actions (Lihat, Play, Hapus) and adding songs
+  document.addEventListener("DOMContentLoaded", function () {
+    // Add songs to the list
+    var songList = document.getElementById("songList");
+    songs.forEach(function (song) {
+      var row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${song.title}</td>
+        <td>${song.artist}</td>
+        <td>${song.duration}</td>
+        <td>
+          <button class="btn btn-primary btn-lihat">Lihat</button>
+          <button class="btn btn-success btn-play">Play</button>
+          <button class="btn btn-danger btn-hapus">Hapus</button>
+        </td>
+      `;
+      songList.appendChild(row);
+    });
+    // Add song to playlist action
+    document
+      .querySelector("#submitSongButton")
+      .addEventListener("click", function (event) {
+        event.preventDefault();
+        var selectedSongIndex =
+          document.getElementById("laguDropdown").selectedIndex;
+        var selectedSong = songs[selectedSongIndex];
+        alert("Song added to playlist: " + selectedSong.title);
+        // Implement your logic here to add the selected song to the playlist
+        songs.push(selectedSong); // Add the selected song to the songs array
+        renderSongs(); // Re-render the list of songs
+        $("#tambahLaguModal").modal("hide"); // Close modal after adding song
+      });
+
+    // Function to render the list of songs
+    function renderSongs() {
+      var songList = document.getElementById("songList");
+      songList.innerHTML = ""; // Clear the existing list
+      songs.forEach(function (song) {
+        var row = document.createElement("tr");
+        row.innerHTML = `
+        <td>${song.title}</td>
+        <td>${song.artist}</td>
+        <td>${song.duration}</td>
+        <td>
+            <button class="btn btn-primary btn-lihat">Lihat</button>
+            <button class="btn btn-success btn-play" data-title="${song.title}">Play</button>
+            <button class="btn btn-danger btn-hapus">Hapus</button>
+        </td>
+    `;
+        songList.appendChild(row);
+      });
+
+      // Add event listeners to the "Play" buttons
+      var playButtons = document.querySelectorAll(".btn-play");
+      playButtons.forEach(function (button) {
+        button.addEventListener("click", function (event) {
+          var title = event.target.getAttribute("data-title");
+          // alert("Playing: " + title);
+          // Implement your logic to play the song here
+          var currentBaseUrl = window.location.origin;
+          var testUrl = currentBaseUrl + "/now_playing";
+          window.location.href = testUrl;
+        });
+      });
+    }
+  });
+</script>
+{% endblock %}
