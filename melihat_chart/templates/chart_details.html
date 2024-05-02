@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chart Detail - The Music App</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <style>
+      body,
+      body > div > ul > li,
+      .music-table {
+        background-color: #121212 !important;
+        color: #fff;
+      }
+      .navbar {
+        background-color: #000;
+      }
+      .nav-link {
+        color: #1db954 !important; /* Green color for links */
+      }
+      .playlist-list,
+      .playlist-modal,
+      .playlist-card,
+      .now-playing-card {
+        background-color: #121212 !important;
+      }
+      th,
+      td {
+        color: #fff;
+        border: 1px solid #fff; /* Add border */
+        padding: 8px; /* Add padding */
+      }
+      th {
+        background-color: #000;
+      }
+      .kembali-button {
+        background-color: white; /* Warna latar belakang */
+        color: black;
+        display: block;
+        margin: 0 auto; /* Pusatkan tombol */
+        margin-top: 20px; /* Jarak dari atas */
+      }
+      .kembali-button:hover {
+        background-color: #cbcbcb; /* Warna latar belakang saat hover */
+        border-color: #000000; /* Warna border saat hover */
+      }
+      .lihat-button {
+        background-color: #025e2d; /* Warna latar belakang */
+        border-color: #025e2d; /* Warna border */
+        color: white;
+      }
+      .lihat-button:hover {
+        background-color: #04b35b; /* Warna latar belakang saat hover */
+        border-color: #025e2d; /* Warna border saat hover */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div id="chartDetail">
+        <h2 class="text-center mt-4 mb-5">Chart Detail</h2>
+        <p><strong>Tipe: Daily Top 20</strong> <span id="chartType"></span></p>
+        <h2 class="mt-5">Daftar Lagu</h2>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Judul Lagu</th>
+              <th>Oleh</th>
+              <th>Tanggal Rilis</th>
+              <th>Total Plays</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Song1</td>
+              <td>Artist1</td>
+              <td>09/03/2024</td>
+              <td>21000</td>
+              <td><button class="btn lihat-button">Lihat</button></td>
+            </tr>
+            <tr>
+              <td>Song2</td>
+              <td>Artist2</td>
+              <td>02/03/2024</td>
+              <td>19000</td>
+              <td><button class="btn lihat-button">Lihat</button></td>
+            </tr>
+          </tbody>
+        </table>
+        <button
+          class="btn kembali-button"
+          onclick="window.location.href = 'chart_list.html'"
+        >
+          Kembali
+        </button>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+      const urlParams = new URLSearchParams(window.location.search);
+      const chartType = urlParams.get("type");
+      document.getElementById("chartType").innerText = chartType;
+    </script>
+  </body>
+</html>

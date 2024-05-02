@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chart List - The Music App</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <style>
+      body,
+      body > div > ul > li,
+      .music-table {
+        background-color: #121212 !important;
+        color: #fff;
+      }
+      .navbar {
+        background-color: #000;
+      }
+      .nav-link {
+        color: #1db954 !important; /* Green color for links */
+      }
+      .playlist-list,
+      .playlist-modal,
+      .playlist-card,
+      .now-playing-card {
+        background-color: #121212 !important;
+      }
+      #chartListContainer {
+        display: block;
+      }
+      #chartDetailContainer {
+        display: none;
+      }
+      .list-group-item {
+        background: #008b4f;
+        border-color: #ffffff;
+        color: white;
+        border-width: 3px;
+      }
+      .lihat-button {
+        background-color: #025e2d; /* Warna latar belakang */
+        border-color: #025e2d; /* Warna border */
+        color: white;
+      }
+      .lihat-button:hover {
+        background-color: #04b35b; /* Warna latar belakang saat hover */
+        border-color: #025e2d; /* Warna border saat hover */
+      }
+      .kembali-button {
+        background-color: white; /* Warna latar belakang */
+        color: black;
+        display: block;
+        margin: 0 auto; /* Pusatkan tombol */
+        margin-top: 20px; /* Jarak dari atas */
+      }
+      .kembali-button:hover {
+        background-color: #cbcbcb; /* Warna latar belakang saat hover */
+        border-color: #000000; /* Warna border saat hover */
+      }
+      th {
+        background-color: #000;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <a class="navbar-brand" href="#">The Music App</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#"
+              >Home <span class="sr-only">(current)</span></a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Podcasts</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Artists</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Albums</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Playlists</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <div class="container">
+      <h1 class="text-center mt-4 mb-5">Chart List</h1>
+      <div id="chartListContainer">
+        <ul class="list-group">
+          <li class="list-group-item">
+            <strong>Daily Top 20</strong>
+            <button
+              class="btn lihat-button float-right"
+              onclick="showChartDetail('Daily Top 20')"
+            >
+              Lihat Daftar Lagu
+            </button>
+          </li>
+          <li class="list-group-item">
+            <strong>Weekly Top 20</strong>
+            <button
+              class="btn lihat-button float-right"
+              onclick="showChartDetail('Weekly Top 20')"
+            >
+              Lihat Daftar Lagu
+            </button>
+          </li>
+          <li class="list-group-item">
+            <strong>Monthly Top 20</strong>
+            <button
+              class="btn lihat-button float-right"
+              onclick="showChartDetail('Monthly Top 20')"
+            >
+              Lihat Daftar Lagu
+            </button>
+          </li>
+          <li class="list-group-item">
+            <strong>Yearly Top 20</strong>
+            <button
+              class="btn lihat-button float-right"
+              onclick="showChartDetail('Yearly Top 20')"
+            >
+              Lihat Daftar Lagu
+            </button>
+          </li>
+        </ul>
+      </div>
+      <div id="chartDetailContainer"></div>
+      <button
+        class="btn kembali-button"
+        onclick="window.location.href = 'chart_list.html'"
+      >
+        Kembali
+      </button>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+      function showChartDetail(chartType) {
+        document.getElementById("chartType").innerText = chartType;
+        document.getElementById("chartListContainer").style.display = "none";
+        document.getElementById("chartDetailContainer").style.display = "block";
+        window.location.href = `chart_details.html?type=${chartType}`;
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Music App</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+
+    <!-- Dark mode CSS -->
+    <style>
+      body,
+      body > div > ul > li,
+      .music-table {
+        background-color: #121212 !important;
+        color: #fff;
+      }
+
+      .navbar {
+        background-color: #000;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .nav-link {
+        color: #1db954 !important; /* Green color for links */
+      }
+
+      .playlist-list,
+      .playlist-modal,
+      .playlist-card,
+      .now-playing-card {
+        background-color: #121212 !important;
+      }
+
+      td,
+      th {
+        color: #fff;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        border: 1px solid #fff;
+        padding: 8px;
+        text-align: left;
+      }
+
+      th {
+        background-color: #000;
+      }
+
+      .kembali-button {
+        background-color: #025e2d; /* Warna latar belakang */
+        border-color: #00d061; /* Warna border */
+        color: white;
+      }
+
+      .kembali-button:hover {
+        background-color: #04b35b; /* Warna latar belakang saat hover */
+        border-color: #04b35b; /* Warna border saat hover */
+      }
+
+      /* Padding untuk konten */
+      .content {
+        padding-top: 70px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <a class="navbar-brand" href="#">The Music App</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#"
+              >Home <span class="sr-only">(current)</span></a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Podcasts</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Artists</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Albums</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Playlists</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container content">
+      <h1 class="text-center mt-4 mb-5">Kelola Podcast</h1>
+
+      <!-- Podcast Detail -->
+      <div class="row mt-5">
+        <div class="col-md-6 offset-md-3">
+          <h2>PODCAST DETAIL</h2>
+          <p><strong>Judul:</strong> Podcast1</p>
+          <p><strong>Genre(s):</strong></p>
+          <ul>
+            <li>Genre1</li>
+            <li>Genre2</li>
+          </ul>
+          <p><strong>Podcaster:</strong> Artist1</p>
+          <p><strong>Total Durasi:</strong> 8 jam 20 menit</p>
+          <p><strong>Tanggal Rilis:</strong> 18/03/24</p>
+          <p><strong>Tahun:</strong> 2024</p>
+        </div>
+      </div>
+
+      <!-- Daftar Episode -->
+      <div class="row mt-5">
+        <div class="col-md-12">
+          <h2>DAFTAR EPISODE</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Judul Episode</th>
+                <th>Deskripsi</th>
+                <th>Durasi</th>
+                <th>Tanggal</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>SubJudul1</td>
+                <td>Lorem Ipsum ....</td>
+                <td>59 menit</td>
+                <td>18/03/2024</td>
+              </tr>
+              <tr>
+                <td>SubJudul2</td>
+                <td>Lorem Ipsum ....</td>
+                <td>1 jam 2 menit</td>
+                <td>25/03/2024</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row mt-5">
+        <div class="col-md-6 offset-md-3 text-center">
+          <a href="#" class="btn kembali-button">Kembali</a>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>

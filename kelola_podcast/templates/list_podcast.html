@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Music App</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <style>
+      body,
+      body > div > ul > li,
+      .music-table {
+        background-color: #121212 !important;
+        color: #fff;
+      }
+
+      .navbar {
+        background-color: #000;
+      }
+
+      .nav-link {
+        color: #1db954 !important; /* Green color for links */
+      }
+
+      .playlist-list,
+      .playlist-modal,
+      .playlist-card,
+      .now-playing-card {
+        background-color: #121212 !important;
+      }
+
+      th {
+        background-color: #000;
+        color: white;
+      }
+
+      td {
+        color: white;
+      }
+
+      .container {
+        justify-content: center;
+        align-items: center;
+      }
+      .text-center {
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <a class="navbar-brand" href="#">The Music App</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#"
+              >Home <span class="sr-only">(current)</span></a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Podcasts</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Artists</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Albums</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Playlists</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <div class="container text-center" id="list-podcast">
+      <h1 class="mt-4 mb-4">LIST PODCAST</h1>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Judul</th>
+            <th>Jumlah Episode</th>
+            <th>Total Durasi</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Podcast1</td>
+            <td>0</td>
+            <td>0 menit</td>
+            <td>
+              <button
+                onclick="window.location.href='daftar-episode.html#daftar-episode'"
+                class="btn btn-primary"
+              >
+                Lihat Daftar Episode
+              </button>
+              <button
+                onclick="window.location.href='create-episode.html#create-episode'"
+                class="btn btn-success"
+              >
+                Tambah Episode
+              </button>
+              <button class="btn btn-danger">Hapus</button>
+            </td>
+          </tr>
+          <tr>
+            <td>Podcast2</td>
+            <td>2</td>
+            <td>4 menit</td>
+            <td>
+              <button
+                onclick="window.location.href='daftar_episode.html#daftar-episode'"
+                class="btn btn-primary"
+              >
+                Lihat Daftar Episode
+              </button>
+              <button
+                onclick="window.location.href='create_episode.html#create-episode'"
+                class="btn btn-success"
+              >
+                Tambah Episode
+              </button>
+              <button class="btn btn-danger">Hapus</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>

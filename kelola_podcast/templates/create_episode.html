@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Music App</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <style>
+      body,
+      body > div > ul > li,
+      .music-table {
+        background-color: #121212 !important;
+        color: #fff;
+      }
+
+      .navbar {
+        background-color: #000;
+      }
+
+      .nav-link {
+        color: #1db954 !important; /* Green color for links */
+      }
+
+      .playlist-list,
+      .playlist-modal,
+      .playlist-card,
+      .now-playing-card {
+        background-color: #121212 !important;
+      }
+
+      th {
+        background-color: #000;
+        color: white;
+      }
+
+      td {
+        color: white;
+      }
+
+      .container {
+        justify-content: center;
+        align-items: center;
+      }
+
+      .submit-button {
+        background-color: #025e2d; /* Warna latar belakang */
+        color: #025e2d;
+        display: block;
+        margin-top: 20px; /* Jarak dari atas */
+        margin-left: auto;
+        margin-right: auto;
+        color: white;
+      }
+
+      .submit-button:hover {
+        background-color: #04b35b; /* Warna latar belakang saat hover */
+        border-color: #04b35b; /* Warna border saat hover */
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <a class="navbar-brand" href="#">The Music App</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#"
+              >Home <span class="sr-only">(current)</span></a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Podcasts</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Artists</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Albums</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Playlists</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <div class="container" id="create-episode">
+      <h1 class="text-center mt-4 mb-2">CREATE EPISODE</h1>
+      <form
+        action="#"
+        method="POST"
+        style="width: 50%; margin: 0 auto"
+        id="create-episode-form"
+      >
+        <div class="form-group">
+          <label for="podcast">Podcast:</label>
+          <select class="form-control" id="podcast" name="podcast" disabled>
+            <option value="Podcast1">Podcast1</option>
+            <option value="Podcast2">Podcast2</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="judul">Judul:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="judul"
+            name="judul"
+            placeholder="Masukkan judul episode"
+          />
+        </div>
+        <div class="form-group">
+          <label for="deskripsi">Deskripsi:</label>
+          <textarea
+            class="form-control"
+            id="deskripsi"
+            name="deskripsi"
+            placeholder="Masukkan deskripsi episode"
+          ></textarea>
+        </div>
+        <div class="form-group">
+          <label for="durasi">Durasi:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="durasi"
+            name="durasi"
+            placeholder="Masukkan durasi episode"
+          />
+        </div>
+        <button type="submit" class="btn submit-button">Submit</button>
+      </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $('a[href="#create-episode"]').click(function () {
+          $("#list-podcast").hide();
+          $("#create-episode").show();
+          var podcastName = $(this).closest("tr").find("td:first").text();
+          $("#podcast").val(podcastName).prop("disabled", true);
+        });
+
+        $("#create-episode-form").submit(function (event) {
+          event.preventDefault();
+          $("#create-episode").hide();
+          $("#list-podcast").show();
+        });
+      });
+    </script>
+  </body>
+</html>
