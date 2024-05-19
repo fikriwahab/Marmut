@@ -1438,7 +1438,7 @@ def remove_album(request, id_album):
         with connection.cursor() as cursor:
             cursor.execute(f"""DELETE FROM marmut.KONTEN WHERE marmut.KONTEN.id IN(
                             SELECT marmut.SONG.id_konten FROM marmut.SONG
-                            WHERE marmut.SONG.id_album = '{id_album}'
+                            WHERE marmut.SONG.id_album = '{id_album}')
                            """)
             cursor.execute(f"DELETE FROM marmut.ALBUM WHERE marmut.ALBUM.id = '{id_album}'")
         return redirect(reverse('list_album'))
