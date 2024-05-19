@@ -34,7 +34,7 @@ urlpatterns = [
     # URLs for managing albums
     path('list_album/', views.list_album, name='list_album'),
     path('create_album/', views.create_album, name='create_album'),
-    path('remove_album/<str:id>', views.remove_album, name='remove_album'),
+    path('remove_album/<str:id_album>', views.remove_album, name='remove_album'),
 
     # URLs for managing songs
     path('list_song/<str:id>', views.list_song, name='list_song'),
