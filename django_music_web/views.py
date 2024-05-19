@@ -720,9 +720,6 @@ def kelola_podcast(request):
 
     return render(request, 'awal_kelola_podcast.html', context)
 
-def list_podcast(request):
-    return render(request, 'list_podcast.html')
-
 def create_podcast(request):
     records_genre = []
     

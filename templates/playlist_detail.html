@@ -14,7 +14,7 @@
       <p class="card-text">Deskripsi: {{ playlist.deskripsi }}</p>
       <a href="#" id="shufflePlayButton" class="btn btn-primary">Shuffle Play</a>
       <a href="#" class="btn btn-success" data-toggle="modal" data-target="#tambahLaguModal">Tambah Lagu</a>
-      <a href="javascript:history.back()" class="btn btn-secondary">Kembali</a>
+      <a href="{% url "playlist" %}" class="btn btn-secondary">Kembali</a>
     </div>
   </div>
   <div class="card playlist-card mt-3">
@@ -84,6 +84,8 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {
+      var delayInMilliseconds = 2000; //1 second
+
       var shufflePlayButton = document.getElementById("shufflePlayButton");
       shufflePlayButton.addEventListener("click", function (event) {
           event.preventDefault();
@@ -150,7 +152,9 @@
               if (status === 200) {
                   $('#tambahLaguModal').modal('hide');
                   $('#message').text(body.message).css('color', 'green');
+                  setTimeout(function() {
                   location.reload();
+                  }, delayInMilliseconds)
                   // Optionally, reload the page or update the song list dynamically
               } else {
                   $('#message').text(body.message).css('color', 'red');
