@@ -106,7 +106,7 @@
                   <td class="py-3 px-4">{{ song.release_date }}</td>
                   <td class="py-3 px-4">{{ song.total_plays }}</td>
                   <td class="py-3 px-4">
-                    <button class="btn lihat-button">Lihat</button>
+                    <a href="{% url "song_detail" song.id_lagu %}" class="btn lihat-button">Lihat</a>
                   </td>
                 </tr>
                 {% endfor %}

@@ -116,6 +116,9 @@
                     class="btn tambah-button"
                     >Tambah Episode</a
                   >
+                  <form method="post" action="{% url 'delete_podcast' %}" style="display: inline;">
+                    {% csrf_token %}
+                    <input type="hidden" name='podcast_id' value="{{ podcast.podcast_id }}">
                     <button type="submit" class="btn hapus-button">
                       Hapus
                     </button>

@@ -2,6 +2,16 @@
 
 {% block content %}
 <div class="container mt-5">
+    {% if messages %}
+        <div class="mt-3">
+            {% for message in messages %}
+                <div class="alert {% if message.tags %} alert-{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    
     <h2>Registrasi</h2>
     <!-- Registration Options -->
     <form id="registerForm" method="post" action="{% url 'register' %}">
