@@ -1,0 +1,102 @@
+{% extends 'base.html' %} {% block content %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Music App</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <style>
+      .container {
+        justify-content: center;
+        align-items: center;
+      }
+      .text-center {
+        text-align: center;
+      }
+      .submit-button {
+        background-color: #025e2d;
+        color: white;
+        display: block;
+        margin-top: 20px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .submit-button:hover {
+        background-color: #04b35b;
+        border-color: #04b35b;
+      }
+      .now-playing-card {
+        background-color: #121212 !important;
+      }
+      th {
+        background-color: #000;
+        color: white;
+      }
+      td {
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="flex flex-col items-center justify-center font-sans">
+      <div class="bg-gray-900 rounded-lg p-8">
+        <h2
+          class="text-3xl font-semibold text-white mb-4 text-center font-serif"
+        >
+          Create Episode
+        </h2>
+        <form method="post" class="space-y-4 mx-auto" style="max-width: 500px">
+          {% csrf_token %}
+          <div class="text-white" style="padding-bottom: 10px; font-size: 18px">
+            <span><strong>Podcast:</strong> {{ podcast_title }}</span><br />
+          </div>
+          <div>
+            <label for="judul" class="text-white">Judul</label>
+            <input
+              type="text"
+              id="judul"
+              name="judul"
+              class="bg-[#f0e3ff] w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-[#b17bc9]"
+              required
+            />
+          </div>
+          <div>
+            <label for="deskripsi" class="text-white">Deskripsi</label>
+            <textarea
+              id="deskripsi"
+              name="deskripsi"
+              class="bg-[#f0e3ff] w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-[#b17bc9]"
+              required
+            ></textarea>
+          </div>
+          <div>
+            <label for="durasi" class="text-white">Durasi</label>
+            <input
+              type="text"
+              id="durasi"
+              name="durasi"
+              class="bg-[#f0e3ff] w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-[#b17bc9]"
+              required
+            />
+          </div>
+          <div>
+            <button
+              type="submit"
+              class="submit-button p-8 w-full py-2 rounded-lg font-semibold"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>
+{% endblock %}

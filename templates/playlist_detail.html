@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+  <div id="message"></div> <!-- Elemen pesan untuk menampilkan hasil respons -->
+  <h2>Playlist Detail</h2>
+  <div class="card playlist-card">
+    <div class="card-body">
+      <h5 class="card-title">Playlist Information</h5>
+      <p class="card-text">Judul: {{ playlist.judul }}</p>
+      <p class="card-text">Pembuatan: {{ playlist.email_pembuat }}</p>
+      <p class="card-text">Jumlah Lagu: {{ playlist.jumlah_lagu }}</p>
+      <p class="card-text">Total Durasi: {{ playlist.total_durasi }}</p>
+      <p class="card-text">Tanggal Dibuat: {{ playlist.tanggal_dibuat }}</p>
+      <p class="card-text">Deskripsi: {{ playlist.deskripsi }}</p>
+      <a href="#" id="shufflePlayButton" class="btn btn-primary">Shuffle Play</a>
+      <a href="#" class="btn btn-success" data-toggle="modal" data-target="#tambahLaguModal">Tambah Lagu</a>
+      <a href="{% url "playlist" %}" class="btn btn-secondary">Kembali</a>
+    </div>
+  </div>
+  <div class="card playlist-card mt-3">
+    <div class="card-body">
+      <h5 class="card-title">Daftar Lagu</h5>
+      <table class="table music-table">
+        <thead>
+          <tr>
+            <th>Judul Lagu</th>
+            <th>Oleh</th>
+            <th>Durasi</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="songList">
+          {% for song in songs %}
+          <tr>
+            <td>{{ song.judul }}</td>
+            <td>{{ song.artis }}</td>
+            <td>{{ song.durasi }} menit</td>
+            <td>
+              <a href="{% url 'song_detail' song.id %}" class="btn btn-primary">Lihat</a>
+              <a href="#" class="btn btn-success playSongButton" data-song-id="{{ song.id }}">Play</a>
+              <form method="post" action="{% url 'remove_song_from_playlist' playlist.id_user_playlist song.id %}" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Hapus</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Tambah Lagu Modal -->
+<div class="modal fade" id="tambahLaguModal" tabindex="-1" role="dialog" aria-labelledby="tambahLaguModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content playlist-modal">
+      <div class="modal-header">
+        <h5 class="modal-title" id="tambahLaguModalLabel">Tambah Lagu</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="tambahLaguForm" method="post" action="{% url 'add_song_to_playlist' playlist.id_user_playlist %}">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="laguDropdown">Lagu:</label>
+            <select class="form-control" id="laguDropdown" name="song_id">
+              {% for song in available_songs %}
+              <option value="{{ song.id }}">{{ song.judul }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tempat untuk menampilkan pesan -->
+<div id="message"></div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+      var delayInMilliseconds = 2000; //1 second
+
+      var shufflePlayButton = document.getElementById("shufflePlayButton");
+      shufflePlayButton.addEventListener("click", function (event) {
+          event.preventDefault();
+          var formData = new FormData();
+          formData.append('playlist_id', "{{ playlist.id_user_playlist }}");
+          formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+          
+          fetch("{% url 'shuffle_play' %}", {
+              method: 'POST',
+              body: formData,
+              headers: {
+                  'X-Requested-With': 'XMLHttpRequest'
+              }
+          }).then(response => response.json())
+            .then(data => alert(data.message))
+            .catch(error => console.error('Error:', error));
+      });
+  
+      var playSongButtons = document.querySelectorAll(".playSongButton");
+      playSongButtons.forEach(button => {
+          button.addEventListener("click", function (event) {
+              event.preventDefault();
+              var songId = this.getAttribute("data-song-id");
+              var formData = new FormData();
+              formData.append('song_id', songId);
+              formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+              
+              fetch("{% url 'play_song2' %}", {
+                  method: 'POST',
+                  body: formData,
+                  headers: {
+                      'X-Requested-With': 'XMLHttpRequest'
+                  }
+              }).then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                    } else {
+                        alert(data.message);
+                        // Optionally, update the total play count here
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+          });
+      });
+  
+      var tambahLaguForm = document.getElementById("tambahLaguForm");
+      tambahLaguForm.addEventListener("submit", function (event) {
+          event.preventDefault();
+          var formData = new FormData(tambahLaguForm);
+  
+          fetch(tambahLaguForm.action, {
+              method: 'POST',
+              body: formData,
+              headers: {
+                  'X-Requested-With': 'XMLHttpRequest'
+              }
+          }).then(response => {
+              return response.json().then(data => ({
+                  status: response.status,
+                  body: data
+              }));
+          }).then(({ status, body }) => {
+              if (status === 200) {
+                  $('#tambahLaguModal').modal('hide');
+                  $('#message').text(body.message).css('color', 'green');
+                  setTimeout(function() {
+                    location.reload();
+                  }, delayInMilliseconds)
+                  // Optionally, reload the page or update the song list dynamically
+              } else {
+                  $('#message').text(body.message).css('color', 'red');
+              }
+          }).catch(error => {
+              console.error('Error:', error);
+              $('#message').text('Lagu sudah ada dalam playlist').css('color', 'red');
+          });
+      });
+  });
+</script>
+{% endblock %}

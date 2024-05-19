@@ -1,0 +1,90 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-dark">
+    <a class="navbar-brand" href="#">Marmut A15</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <!-- Setelah Login -->
+            {% if user.is_authenticated %}
+                <!-- Dashboard -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
+                </li>
+
+                {% if not is_label %}
+                    <!-- Chart -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'chart' %}">Chart</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <form class="form-inline my-2 my-lg-0">
+                            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                        </form>
+                    </li>
+
+                    <!-- Playlist -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'playlist' %}">Kelola Playlist</a>
+                    </li>
+
+                    <!-- Podcast & Premium -->
+                    {% if not is_premium %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Langganan Paket</a>
+                        </li>
+                    {% endif %}
+
+                    {% if is_premium %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Kelola Downloaded Songs</a>
+                        </li>
+                    {% endif %}
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'all_podcasts' %}">All Podcast</a>
+                      </li>
+
+                    {% if is_podcaster %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'kelola_podcast' %}">Kelola Podcast</a>
+                        </li>
+                    {% endif %}
+
+                    <!-- Album & Song -->
+                    {% if is_artist or is_songwriter %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'list_album' %}">Kelola Album & Songs</a>
+                        </li>
+                    {% endif %}
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'list_album' %}">Kelola Album</a>
+                    </li>
+                {% endif %}
+
+                {% if is_artist or is_songwriter or is_label %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'check_royalty' %}">Cek Royalti</a>
+                    </li>
+                {% endif %}
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                </li>
+
+            <!-- Sebelum Login -->
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'register' %}">Registrasi</a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="m-5 card playlist-card">
+  <div class="mx-auto">  
+    <h1 class="card-title">
+      MARMUT-A15
+    <h1>
+  </div>
+  <div class="mx-auto my-2">
+    <a class="btn btn-primary" href="{% url 'login' %}"> Login! </a>
+  </div>
+  <div class="mx-auto my-2">
+    <a class="btn btn-success" href="{% url 'register' %}"> Register! </a>
+  </div>
+</div>
+{% endblock %}
+

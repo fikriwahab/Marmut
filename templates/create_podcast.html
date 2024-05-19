@@ -1,0 +1,118 @@
+{% extends 'base.html' %} {% block content %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Music App</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <style>
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 70vh;
+      }
+      .btn-primary {
+        width: fit-content;
+        margin: auto;
+        display: block;
+      }
+      .submit-button {
+        background-color: #025e2d; /* Warna latar belakang */
+        color: #025e2d;
+        width: fit-content;
+        margin: auto;
+        display: block;
+        color: white;
+      }
+      .submit-button:hover {
+        background-color: #04b35b; /* Warna latar belakang saat hover */
+        border-color: #04b35b; /* Warna border saat hover */
+        width: fit-content;
+        margin: auto;
+        display: block;
+      }
+      .now-playing-card {
+        background-color: #121212 !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="flex flex-col items-center justify-center font-sans">
+        <div class="bg-gray-900 rounded-lg p-8">
+          <h2
+            class="text-3xl font-semibold text-white mb-4 text-center font-serif"
+          >
+            Create Podcast
+          </h2>
+          <form method="post" class="space-y-6 text-center">
+            {% csrf_token %}
+            <div class="w-full mb-4">
+              <label for="judul" class="text-white">Judul</label>
+              <input
+                type="text"
+                id="judul"
+                name="judul"
+                class="bg-[#f0e3ff] w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-[#b17bc9]"
+                required
+              />
+            </div>
+            <div class="w-full mb-4">
+              <label for="genre" class="text-white">Genre</label>
+              <select
+                id="genre"
+                name="genre[]"
+                multiple
+                class="bg-[#f0e3ff] w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-[#b17bc9]"
+                required
+              >
+                {% for genre in records_genre %}
+                <option value="{{ genre.0 }}">{{ genre.0 }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="w-full">
+              <button type="submit" class="btn submit-button">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+      var isMouseDownGenre = false;
+
+      document
+        .getElementById("genre")
+        .addEventListener("mousedown", function (e) {
+          isMouseDownGenre = true;
+          e.target.selected = !e.target.selected;
+          e.preventDefault();
+        });
+
+      document.addEventListener("mouseup", function () {
+        isMouseDownGenre = false;
+      });
+
+      document
+        .getElementById("genre")
+        .addEventListener("mousemove", function (e) {
+          if (isMouseDownGenre) {
+            e.target.selected = !e.target.selected;
+            e.preventDefault();
+          }
+        });
+    </script>
+  </body>
+</html>
+{% endblock %}

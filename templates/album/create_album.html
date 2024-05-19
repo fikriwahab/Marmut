@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% block content %}
+<form id="addAlbumForm" method="post" action="{% url 'create_album' %}">
+    {% csrf_token %}
+    <div class="container mt-5">
+        <div class="mx-auto">    
+            <h2 class="mx-auto">Create Album</h2>
+        </div>
+        <div class="form-group">
+            <label for="judul">Judul</label>
+            <input type="text" class="form-control" id="judul" name="judul" placeholder="Judul" required>
+        </div>
+        <div class="form-group">
+            <label for="label">Label</label>
+            {% if is_label %}
+                {% for label in labels %}
+                    <select id="label"  name="label" class="form-control" disabled="disabled">
+                        <option value="{{ label.id }}" selected="selected"> {{ label.nama }} </option>
+                    </select>
+                    <input type="hidden" name="label" value={{ label.id }} />
+                {% endfor %}
+            {% else %}
+                <select class="form-control" id="label" name="label" required> 
+                    {% for label in labels %}
+                        <option value="{{ label.id }}"> {{ label.nama }} </option>
+                    {% endfor %}
+                </select>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <div class="mx-auto">    
+            <h2 class="mx-auto">Buat Lagu Pertama</h2>
+        </div>
+        <div class="form-group">
+            <label for="judul">Judul</label>
+            <input type="text" class="form-control" name="judulLagu" id="judulLagu" placeholder="Judul">
+        </div>
+        <div class="form-group">
+            <label for="artist">Artist</label>
+            {% if is_artist %}
+                <select name="artist" class="form-control" id = "artist">
+                    <option value="{{ artists.0.id }}" selected="selected"> {{ artists.0.nama }} </option>
+                </select>
+            {% else %}
+                <select id = "artist" class="form-control" name="artist" required> 
+                    {% for artist in artists %}
+                        <option value="{{ artist.id }}"> {{ artist.nama }} </option>
+                    {% endfor %}
+                </select>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="songwriter">Songwriter</label>
+            <select id="songwriter" name="songwriter" class="form-control" multiple required>
+                {% if is_songwriter %}
+                    <option selected="selected" disabled="disabled"> {{ originalwriter.0.nama }} </option>
+                {% endif %}
+                {% for writer in songwriters %}
+                    <option value="{{ writer.id }}"> {{ writer.nama }} </option>
+                {% endfor %}
+            </select>
+            {% if is_songwriter %}
+                <input type="hidden" name="songwriter" id = "songwriter" value={{ originalwriter.0.id }} />    
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="genre">Genre</label>
+            <select id="genre" name="genre" class="form-control" multiple required>
+                {% for genreItem in genres %}
+                    <option value="{{ genreItem.genre }}"> {{ genreItem.genre }} </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="durasi">Durasi</label>
+            <input type="text" class="form-control" id="durasi" name="durasi" placeholder="Durasi" required>
+        </div>
+        <div class="mx-auto">    
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <a href="{% url "list_album" %}" class="mx-auto my-2 btn btn-secondary">
+                Kembali
+            </a>
+        </div>
+    </div>
+</form>
+<script>
+    
+</script>
+{% endblock %}

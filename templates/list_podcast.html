@@ -1,0 +1,146 @@
+{% extends 'base.html' %} {% block content %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Music App</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <style>
+      .now-playing-card {
+        background-color: #121212 !important;
+      }
+
+      th {
+        background-color: #000;
+        color: white;
+      }
+
+      td {
+        color: white;
+      }
+
+      h2 {
+        color: white;
+      }
+
+      .container {
+        padding-top: 60px; /* Tambahkan padding untuk menghindari overlap dengan navbar */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+
+      .text-center {
+        text-align: center;
+      }
+
+      .hapus-button {
+        background-color: #025e2d; /* Warna latar belakang */
+        color: white;
+        width: fit-content;
+        margin: auto;
+        display: block;
+      }
+
+      .hapus-button:hover {
+        background-color: #04b35b; /* Warna latar belakang saat hover */
+        border-color: #04b35b; /* Warna border saat hover */
+        width: fit-content;
+        margin: auto;
+        display: block;
+      }
+
+      .tambah-button {
+        background-color: white; /* Warna latar belakang */
+        color: black;
+        display: block;
+        margin: 20px auto; /* Pusatkan tombol */
+      }
+
+      .tambah-button:hover {
+        background-color: #cbcbcb; /* Warna latar belakang saat hover */
+        border-color: #000000; /* Warna border saat hover */
+      }
+
+      .table-wrapper {
+        overflow-x: auto;
+        background-color: #151829;
+        border-radius: 10px;
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="max-w-4xl w-full mx-4">
+        <h2 class="text-4xl font-bold mb-2 text-center font-serif">
+          List Podcast
+        </h2>
+        <div class="table-wrapper">
+          <table class="min-w-full bg-[#151829] rounded-lg overflow-hidden">
+            <thead class="bg-[#9e60d1] text-white">
+              <tr>
+                <th class="text-left py-3 px-4 uppercase font-semibold text-sm">
+                  Judul
+                </th>
+                <th class="text-left py-3 px-4 uppercase font-semibold text-sm">
+                  Jumlah Episode
+                </th>
+                <th class="text-left py-3 px-4 uppercase font-semibold text-sm">
+                  Total Durasi
+                </th>
+                <th class="text-left py-3 px-4 uppercase font-semibold text-sm">
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody class="text-gray-400 bg-[#382e47]">
+              {% for podcast in podcasts %}
+              <tr class="text-white">
+                <td class="py-3 px-4">{{ podcast.judul }}</td>
+                <td class="py-3 px-4">{{ podcast.jumlah_episode }}</td>
+                <td class="py-3 px-4">{{ podcast.total_durasi }}</td>
+                <td class="py-3 px-4">
+                  <a
+                    href="{% url 'daftar_episode' %}?podcast_id={{ podcast.podcast_id }}"
+                    class="btn tambah-button"
+                    >Lihat Daftar Episode</a
+                  >
+                  <a
+                    href="{% url 'create_episode' %}?podcast_id={{ podcast.podcast_id }}"
+                    class="btn tambah-button"
+                    >Tambah Episode</a
+                  >
+                  <form method="post" action="{% url 'delete_podcast' %}" style="display: inline;">
+                    {% csrf_token %}
+                    <input type="hidden" name='podcast_id' value="{{ podcast.podcast_id }}">
+                    <button type="submit" class="btn hapus-button">
+                      Hapus
+                    </button>
+                  </form>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          <div class="flex justify-center mt-4">
+            {% if is_podcaster %}
+            <a href="{% url 'create_podcast' %}" class="btn tambah-button"
+              >Tambah Podcast</a
+            >
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>
+{% endblock %}

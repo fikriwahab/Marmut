@@ -1,0 +1,121 @@
+{% extends 'base.html' %} {% block content %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chart Detail - The Music App</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <style>
+      th,
+      td {
+        color: #fff;
+        border: 1px solid #fff; /* Add border */
+        padding: 8px; /* Add padding */
+      }
+      th {
+        background-color: #000;
+      }
+      .kembali-button {
+        background-color: white; /* Warna latar belakang */
+        color: black;
+        display: block;
+        margin: 0 auto; /* Pusatkan tombol */
+        margin-top: 20px; /* Jarak dari atas */
+      }
+      .kembali-button:hover {
+        background-color: #cbcbcb; /* Warna latar belakang saat hover */
+        border-color: #000000; /* Warna border saat hover */
+      }
+      .lihat-button {
+        background-color: #025e2d; /* Warna latar belakang */
+        border-color: #025e2d; /* Warna border */
+        color: white;
+      }
+      .lihat-button:hover {
+        background-color: #04b35b; /* Warna latar belakang saat hover */
+        border-color: #025e2d; /* Warna border saat hover */
+      }
+    </style>
+  </head>
+  <body class="h-screen flex justify-center bg-[#151829] text-white">
+    <div class="py-10 bg-[#151829]">
+      <div class="max-w-4xl mx-auto">
+        <center>
+          <h2 class="text-4xl font-bold mb-5 text-white font-serif">
+            {{ judul }}
+          </h2>
+        </center>
+
+        <div class="text-white" style="padding-bottom: 10px; font-size: 18px">
+          <center>
+            <a href="{% url 'chart' %}" class="btn kembali-button">Kembali</a>
+          </center>
+        </div>
+
+        <div class="-mx-4" style="margin-top: 30px">
+          <div class="overflow-x-auto">
+            <table
+              class="min-w-full bg-[#151829] rounded-lg overflow-hidden mx-auto"
+            >
+              <thead class="bg-[#b17bc9] text-white">
+                <tr bgcolor="#9e60d1" class="text-white">
+                  <th
+                    class="text-left py-3 px-4 uppercase font-semibold text-sm"
+                    colspan="5"
+                  >
+                    <center>DAFTAR LAGU</center>
+                  </th>
+                </tr>
+                <tr>
+                  <th
+                    class="text-left py-3 px-4 uppercase font-semibold text-sm"
+                  >
+                    Judul Lagu
+                  </th>
+                  <th
+                    class="text-left py-3 px-4 uppercase font-semibold text-sm"
+                  >
+                    Oleh
+                  </th>
+                  <th
+                    class="text-left py-3 px-4 uppercase font-semibold text-sm"
+                  >
+                    Tanggal Rilis
+                  </th>
+                  <th
+                    class="text-left py-3 px-4 uppercase font-semibold text-sm"
+                  >
+                    Total Plays
+                  </th>
+                  <th
+                    class="text-left py-3 px-4 uppercase font-semibold text-sm"
+                  >
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="text-gray-400 bg-[#382e47]">
+                {% for song in list_song %}
+                <tr class="text-white">
+                  <td class="py-3 px-4">{{ song.title }}</td>
+                  <td class="py-3 px-4">{{ song.artist }}</td>
+                  <td class="py-3 px-4">{{ song.release_date }}</td>
+                  <td class="py-3 px-4">{{ song.total_plays }}</td>
+                  <td class="py-3 px-4">
+                    <button class="btn lihat-button">Lihat</button>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+{% endblock %}

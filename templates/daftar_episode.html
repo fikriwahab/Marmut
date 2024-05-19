@@ -1,0 +1,114 @@
+{% extends 'base.html' %} {% block content %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Music App</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <style>
+      body {
+        background-color: #121212; /* Ubah latar belakang body menjadi abu-abu tua */
+        color: white; /* Ubah warna teks menjadi putih */
+      }
+      .container {
+        padding-top: 50px; /* Atur padding atas container */
+      }
+      .btn-delete {
+        color: #fff;
+        background-color: #dc3545;
+        border-color: #dc3545;
+      }
+      th {
+        background-color: #000000; /* Ubah warna latar belakang th */
+        color: white; /* Ubah warna teks th menjadi putih */
+      }
+      td {
+        color: white; /* Ubah warna teks td menjadi putih */
+      }
+      .table {
+        background-color: #151829; /* Ubah warna latar belakang tabel */
+        border-radius: 10px; /* Tambahkan border-radius pada tabel */
+      }
+      .table th,
+      .table td {
+        border-color: #9e60d1; /* Ubah warna border tabel */
+      }
+      .kembali-button {
+        background-color: #025e2d; /* Warna latar belakang */
+        color: #025e2d;
+        width: fit-content;
+        margin: auto;
+        display: block;
+        color: white;
+      }
+      .kembali-button:hover {
+        background-color: #04b35b; /* Warna latar belakang saat hover */
+        border-color: #04b35b; /* Warna border saat hover */
+        width: fit-content;
+        margin: auto;
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2 class="text-center font-weight-bold mb-5">
+        Daftar Episode {{ podcast.judul }}
+      </h2>
+      <div class="overflow-auto">
+        <table class="table table-dark table-striped">
+          <thead>
+            <tr>
+              <th>Judul</th>
+              <th>Deskripsi</th>
+              <th>Durasi</th>
+              <th>Tanggal</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for episode in episodes %}
+            <tr>
+              <td>{{ episode.0 }}</td>
+              <td>{{ episode.1 }}</td>
+              <td>{{ episode.2 }}</td>
+              <td>{{ episode.3 }}</td>
+              <td>
+                <form action="{% url 'delete_episode' %}" method="GET">
+                  <input
+                    type="hidden"
+                    name="episode_id"
+                    value="{{ episode.4 }}"
+                  />
+                  <input
+                    type="hidden"
+                    name="podcast_id"
+                    value="{{ podcast.0 }}"
+                  />
+                  <button type="submit" class="btn btn-delete">Hapus</button>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% if not episodes %}
+        <p class="text-center">Belum ada episode.</p>
+        {% endif %}
+      </div>
+      <div class="text-center mt-4">
+        <a href="{% url 'list_podcast' %}" class="btn kembali-button"
+          >Kembali</a
+        >
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>
+{% endblock %}
