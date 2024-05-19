@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.db import connection, IntegrityError
+from django.db import connection, IntegrityError, InternalError
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
@@ -91,26 +91,8 @@ def register_view(request):
             email = request.POST['email']
             email_label = request.POST['email_label']
             role = request.POST['role']
-
-            # Check if the email already exists in either AKUN or LABEL
-            email_check_query = f"""
-                SELECT email FROM (
-                    SELECT email FROM marmut.AKUN
-                    UNION
-                    SELECT email FROM marmut.LABEL
-                ) AS combined
-                WHERE email = '{email}'
-                OR email = '{email_label}'
-            """
         
             with connection.cursor() as cursor:
-                cursor.execute(email_check_query)
-                email_exists = cursor.fetchone()
-
-                if email_exists:
-                    messages.error(request, 'Email already registered.')
-                    return render(request, 'register.html')
-
                 if role == 'pengguna':
                     password = request.POST['password']
                     nama = request.POST['nama']
@@ -192,8 +174,12 @@ def register_view(request):
                     messages.success(request, 'Label registered successfully.')
 
             return HttpResponseRedirect(reverse('login'))
+    except InternalError as e:
+        messages.warning(request, str(e).splitlines()[0])
+        return render(request, 'register.html')
     except:
-        return messages.WARNING(request, 'Terdapat field yang kosong.')
+        messages.warning(request, 'Terdapat field yang kosong.')
+        return render(request, 'landing.html')
 
     return render(request, 'register.html')
 
@@ -419,15 +405,15 @@ def playlist_detail_view(request):
             'jumlah_lagu': playlist[2],
             'total_durasi': formatted_total_durasi,
             'email_pembuat': playlist[4],
-            'tanggal_dibuat': playlist[5],
-            'is_premium': request.session['is_premium'],
-            'is_songwriter': request.session['is_songwriter'],
-            'is_artist': request.session['is_artist'],
-            'is_podcaster': request.session['is_podcaster'],
-            'is_label': request.session['is_label']
+            'tanggal_dibuat': playlist[5]
         },
         'songs': [{'id': song[0], 'judul': song[1], 'artis': song[2], 'durasi': song[3]} for song in songs],
-        'available_songs': [{'id': song[0], 'judul': song[1]} for song in available_songs]
+        'available_songs': [{'id': song[0], 'judul': song[1]} for song in available_songs],
+        'is_premium': request.session['is_premium'],
+        'is_songwriter': request.session['is_songwriter'],
+        'is_artist': request.session['is_artist'],
+        'is_podcaster': request.session['is_podcaster'],
+        'is_label': request.session['is_label']
     }
     return render(request, 'playlist_detail.html', context)
 
@@ -482,7 +468,10 @@ def song_detail_view(request, song_id):
     if request.method == 'POST':
         progress = int(request.POST.get('progress', 0))
         if progress > 70:
-            return play_song(request, song_id)
+            play_song(request, song_id)
+            return HttpResponseRedirect(reverse('song_detail', args=(song_id,)))
+        else:
+            messages.warning(request, str('Progress harus lebih dari 70% untuk menghitung play.'))
 
     with connection.cursor() as cursor:
         # Ambil detail lagu
@@ -528,15 +517,15 @@ def song_detail_view(request, song_id):
             'total_play': song[6],
             'total_download': song[7],
             'genres': song[8] or '',
-            'songwriters': song[9] or '',
-            'is_premium': request.session['is_premium'],
-            'is_songwriter': request.session['is_songwriter'],
-            'is_artist': request.session['is_artist'],
-            'is_podcaster': request.session['is_podcaster'],
-            'is_label': request.session['is_label']
+            'songwriters': song[9] or ''
         },
         'playlists': [{'id': playlist[0], 'judul': playlist[1]} for playlist in playlists],
         'is_premium': request.session['is_premium'],
+        'is_premium': request.session['is_premium'],
+        'is_songwriter': request.session['is_songwriter'],
+        'is_artist': request.session['is_artist'],
+        'is_podcaster': request.session['is_podcaster'],
+        'is_label': request.session['is_label']
     }
 
     return render(request, 'now_playing.html', context)
@@ -755,7 +744,7 @@ def create_podcast(request):
         with connection.cursor() as cursor:
             cursor.execute(
                 'INSERT INTO marmut.konten (id, judul, tanggal_rilis, tahun, durasi) VALUES (%s, %s, %s, %s, %s)',
-                (id_podcast, judul, date_now, current_year, 1)  
+                (id_podcast, judul, date_now, current_year, 0)  
             )
 
             cursor.execute(
@@ -862,7 +851,7 @@ def create_episode(request):
         return render(request, 'create_episode.html', context)
     
 def delete_podcast(request):
-    podcast_id = request.GET.get('podcast_id')
+    podcast_id = request.POST.get('podcast_id')
     
     with connection.cursor() as cursor:
         cursor.execute(
