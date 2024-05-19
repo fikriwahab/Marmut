@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <h2>Dashboard</h2>
+    <ul class="list-group" id="user-details">
+        <li class="list-group-item">Nama: {{ nama }}</li>
+        <li class="list-group-item">Email: {{ email }}</li>
+        {% if is_label %}
+        <li class="list-group-item">Kontak: {{ kontak }}</li>
+        {% else %}
+        <li class="list-group-item">Kota Asal: {{ kota_asal }}</li>
+        <li class="list-group-item">Gender: {% if gender == 1 %}Laki-laki{% else %}Perempuan{% endif %}</li>
+        <li class="list-group-item">Tempat Lahir: {{ tempat_lahir }}</li>
+        <li class="list-group-item">Tanggal Lahir: {{ tanggal_lahir }}</li>
+        <li class="list-group-item">Role: {{ roles|join:", " }}</li>
+        <li class="list-group-item">Status Langganan: {% if is_premium %}Premium{% else %}Non-Premium{% endif %}</li>
+        {% endif %}
+    </ul>
+
+    {% if not is_label %}
+    <h3>Daftar Playlist</h3>
+    {% if playlists %}
+    <ul class="list-group">
+        {% for playlist in playlists %}
+        <li class="list-group-item">{{ playlist }}</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>Belum Memiliki Playlist</p>
+    {% endif %}
+    {% endif %}
+
+    {% if is_artist or is_songwriter %}
+    <h3>Daftar Lagu</h3>
+    {% if songs %}
+    <ul class="list-group">
+        {% for song in songs %}
+        <li class="list-group-item">{{ song }}</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>Belum Memiliki Lagu</p>
+    {% endif %}
+    {% endif %}
+
+    {% if is_podcaster %}
+    <h3>Daftar Podcast</h3>
+    {% if podcasts %}
+    <ul class="list-group">
+        {% for podcast in podcasts %}
+        <li class="list-group-item">{{ podcast }}</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>Belum Memiliki Podcast</p>
+    {% endif %}
+    {% endif %}
+
+    {% if is_label %}
+    <h3>Daftar Album</h3>
+    {% if albums %}
+    <ul class="list-group">
+        {% for album in albums %}
+        <li class="list-group-item">{{ album }}</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>Belum Memproduksi Album</p>
+    {% endif %}
+    {% endif %}
+</div>
+{% endblock %}

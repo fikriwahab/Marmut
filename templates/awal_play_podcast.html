@@ -1,0 +1,129 @@
+{% extends 'base.html' %} {% block extra_styles %}
+<style>
+  .kembali-button {
+    background-color: #025e2d;
+    border-color: #00d061;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    display: inline-block;
+    text-decoration: none;
+  }
+  .kembali-button:hover {
+    background-color: #04b35b;
+    border-color: #04b35b;
+  }
+  td,
+  th {
+    color: #fff;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  th,
+  td {
+    border: 1px solid #fff;
+    padding: 8px;
+    text-align: left;
+  }
+  th {
+    background-color: #000;
+  }
+  .content {
+    padding-top: 70px;
+  }
+</style>
+{% endblock %} {% block content %}
+<div class="container content">
+  <h1 class="text-center mt-4 mb-5">List Podcast</h1>
+
+  <!-- Podcast Detail -->
+  <div class="row mt-5">
+    <div class="py-10 bg-[#151829]">
+      <div class="max-w-4xl mx-auto">
+        <center>
+          <h2 class="text-4xl font-bold mb-5 text-white font-serif">
+            Podcast Detail
+          </h2>
+        </center>
+        <div class="text-white" style="padding-bottom: 10px; font-size: 18px">
+          <span><strong>Judul:</strong> {{ detail_podcast.judul }}</span><br />
+          <span><strong>Genre(s):</strong></span
+          ><br />
+          {% for genre in detail_podcast.genre %}
+          <span>- {{ genre }}</span><br />
+          {% endfor %}
+          <span><strong>Podcaster:</strong> {{ detail_podcast.podcaster }}</span
+          ><br />
+          <span
+            ><strong>Total Durasi:</strong> {{ detail_podcast.duration }}</span
+          ><br />
+          <span><strong>Tanggal Rilis:</strong> {{ detail_podcast.date }}</span
+          ><br />
+          <span><strong>Tahun:</strong> {{ detail_podcast.tahun }}</span><br />
+        </div>
+
+        <div class="text-center py-3">
+          <form action="{% url 'dashboard' %}">
+            <button type="submit" class="kembali-button">Kembali</button>
+          </form>
+        </div>
+
+        <div class="-mx-4">
+          <div class="overflow-x-auto">
+            <table class="min-w-full bg-[#151829] rounded-lg overflow-hidden">
+              <thead class="bg-[#b17bc9] text-white">
+                <tr class="text-white">
+                  <th
+                    class="text-left py-3 px-4 uppercase font-semibold text-sm"
+                    colspan="4"
+                  >
+                    <center>DAFTAR EPISODE</center>
+                  </th>
+                </tr>
+                <tr>
+                  <th
+                    class="text-left py-3 px-4 uppercase font-semibold text-sm"
+                  >
+                    Judul Episode
+                  </th>
+                  <th
+                    class="text-left py-3 px-4 uppercase font-semibold text-sm"
+                  >
+                    Deskripsi
+                  </th>
+                  <th
+                    class="text-left py-3 px-4 uppercase font-semibold text-sm"
+                  >
+                    Durasi
+                  </th>
+                  <th
+                    class="text-left py-3 px-4 uppercase font-semibold text-sm"
+                  >
+                    Tanggal
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="text-gray-400 bg-[#382e47]">
+                {% for episode in kumpulan_episode %}
+                <tr class="text-white">
+                  <td class="py-3 px-4">{{ episode.title }}</td>
+                  <td class="py-3 px-4">{{ episode.description }}</td>
+                  <td class="py-3 px-4">{{ episode.duration }}</td>
+                  <td class="py-3 px-4">{{ episode.date }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

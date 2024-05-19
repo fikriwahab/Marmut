@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+  <h2>Kelola Playlist</h2>
+  <div class="card playlist-card" id="user-playlist">
+    {% if playlists %}
+    <table class="table music-table">
+      <thead>
+        <tr>
+          <th>Judul</th>
+          <th>Jumlah Lagu</th>
+          <th>Total Durasi</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for playlist in playlists %}
+        <tr>
+          <td>{{ playlist.judul }}</td>
+          <td>{{ playlist.jumlah_lagu }}</td>
+          <td>{{ playlist.total_durasi }}</td>
+          <td>
+            <a href="{% url 'playlist_detail' %}?id={{ playlist.id_user_playlist }}" class="playlist-detail btn btn-primary" data-id="{{ playlist.id_user_playlist }}">Detail</a> |
+            <a href="#" class="playlist-edit btn btn-success" data-id="{{ playlist.id_user_playlist }}" data-judul="{{ playlist.judul }}" data-deskripsi="{{ playlist.deskripsi }}">Ubah</a> |
+            <a href="#" class="playlist-delete btn btn-danger" data-id="{{ playlist.id_user_playlist }}">Hapus</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p>Anda Belum Memiliki Playlist</p>
+    {% endif %}
+  </div>
+  <a href="#" class="btn btn-primary mt-3" data-toggle="modal" data-target="#addPlaylistModal">Tambah Playlist</a>
+</div>
+
+<!-- Modal Tambah Playlist -->
+<div class="modal fade" id="addPlaylistModal" tabindex="-1" role="dialog" aria-labelledby="addPlaylistModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content playlist-modal">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addPlaylistModalLabel">Tambah Playlist</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="addPlaylistForm" method="post" action="{% url 'add_playlist' %}">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="playlistName">Judul:</label>
+            <input type="text" class="form-control" id="playlistName" name="playlistName" required />
+          </div>
+          <div class="form-group">
+            <label for="playlistDescription">Deskripsi:</label>
+            <textarea class="form-control" id="playlistDescription" name="playlistDescription" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Update Playlist -->
+<div class="modal fade" id="updatePlaylistModal" tabindex="-1" role="dialog" aria-labelledby="updatePlaylistModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content playlist-modal">
+      <div class="modal-header">
+        <h5 class="modal-title" id="updatePlaylistModalLabel">Ubah Playlist</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="updatePlaylistForm" method="post" action="{% url 'update_playlist' '00000000-0000-0000-0000-000000000000' %}">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="updatePlaylistName">Judul:</label>
+            <input type="text" class="form-control" id="updatePlaylistName" name="playlistName" required />
+          </div>
+          <div class="form-group">
+            <label for="updatePlaylistDescription">Deskripsi:</label>
+            <textarea class="form-control" id="updatePlaylistDescription" name="playlistDescription" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("click", function (event) {
+      if (event.target.classList.contains("playlist-detail")) {
+        event.preventDefault();
+        var currentBaseUrl = window.location.origin;
+        var playlistId = event.target.getAttribute("data-id");
+        var detailUrl = currentBaseUrl + "/playlist/details?id=" + playlistId;
+        window.location.href = detailUrl;
+      }
+      if (event.target.classList.contains("playlist-edit")) {
+        event.preventDefault();
+        var playlistId = event.target.getAttribute("data-id");
+        var judul = event.target.getAttribute("data-judul");
+        var deskripsi = event.target.getAttribute("data-deskripsi");
+
+        var updateForm = document.getElementById("updatePlaylistForm");
+        var actionUrl = updateForm
+          .getAttribute("action")
+          .replace("00000000-0000-0000-0000-000000000000", playlistId);
+        updateForm.setAttribute("action", actionUrl);
+
+        document.getElementById("updatePlaylistName").value = judul;
+        document.getElementById("updatePlaylistDescription").value = deskripsi;
+
+        $("#updatePlaylistModal").modal("show");
+      }
+      if (event.target.classList.contains("playlist-delete")) {
+        event.preventDefault();
+        var playlistId = event.target.getAttribute("data-id");
+
+        if (confirm("Are you sure you want to delete this playlist?")) {
+          var actionUrl =
+            "{% url 'delete_playlist' '00000000-0000-0000-0000-000000000000' %}".replace(
+              "00000000-0000-0000-0000-000000000000",
+              playlistId
+            );
+
+          fetch(actionUrl, {
+            method: "POST",
+            headers: {
+              "X-Requested-With": "XMLHttpRequest",
+              "X-CSRFToken": "{{ csrf_token }}", // Include CSRF token for security
+            },
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                location.reload(); // Reload the page after successful deletion
+              } else {
+                alert(data.message);
+              }
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
+        }
+      }
+    });
+  });
+  // Handle update form submission
+  document
+    .getElementById("updatePlaylistForm")
+    .addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      var formData = new FormData(this);
+      var actionUrl = this.getAttribute("action");
+
+      fetch(actionUrl, {
+        method: "POST",
+        body: formData,
+        headers: {
+          "X-Requested-With": "XMLHttpRequest",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            $("#updatePlaylistModal").modal("hide");
+            location.reload(); // Reload the page to reflect changes
+          } else {
+            alert(data.message);
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    });
+</script>
+{% endblock %}

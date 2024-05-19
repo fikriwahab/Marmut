@@ -1,0 +1,187 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+  <h2>Song Detail</h2>
+  <div class="card song-card">
+    <div class="card-body now-playing-card">
+      <h5 class="card-title">Song Information</h5>
+      <p class="card-text">Judul: {{ song.judul }}</p>
+      <p class="card-text">Artist: {{ song.artist_name }}</p>
+      <p class="card-text">Durasi: {{ song.durasi }} menit</p>
+      <p class="card-text">Album: {{ song.album_title }}</p>
+      <p class="card-text">Genre(s): {{ song.genres }}</p>
+      <p class="card-text">Tanggal Rilis: {{ song.tanggal_rilis }}</p>
+      <p class="card-text">Tahun: {{ song.tahun }}</p>
+      <p class="card-text">Total Play: {{ song.total_play }}</p>
+      <p class="card-text">Total Downloads: {{ song.total_download }}</p>
+      <p class="card-text">Songwriter(s): {{ song.songwriters }}</p>
+      <div class="text-center">
+        <input type="range" id="progressRange" name="progress" min="0" max="100" style="width: 80%;">
+      </div>
+      <form id="playForm" method="post" action="{% url 'song_detail' song.id %}">
+        {% csrf_token %}
+        <input type="hidden" id="progressHidden" name="progress" value="0">
+        <input type="hidden" name="song_id" value="{{ song.id }}">
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary">Play</button>
+        </div>
+      </form>
+      <a href="#" id="addToPlaylistButton" class="btn btn-success">Add to Playlist</a>
+      {% if is_premium %}
+      <a href="#" id="downloadButton" class="btn btn-info">Download</a>
+      {% endif %}
+      <a href="javascript:history.back()" class="btn btn-secondary">Kembali</a>
+    </div>
+  </div>
+</div>
+
+<!-- Add to Playlist Modal -->
+<div class="modal fade" id="addToPlaylistModal" tabindex="-1" role="dialog" aria-labelledby="addToPlaylistModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addToPlaylistModalLabel">Add to Playlist</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- ADD SONG TO USER PLAYLIST form -->
+        <form id="addToPlaylistForm" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="song_id" value="{{ song.id }}">
+          <div class="form-group">
+            <label for="playlist">Playlist:</label>
+            <select class="form-control" id="playlist" name="playlist_id" required>
+              <option value="">Select Playlist</option>
+              {% for playlist in playlists %}
+              <option value="{{ playlist.id }}">{{ playlist.judul }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div id="addToPlaylistMessage" class="alert" role="alert" style="display: none;"></div>
+          <button type="submit" class="btn btn-primary">Tambah</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tempat untuk menampilkan pesan -->
+<div id="message" class="alert" role="alert" style="display: none;"></div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+      // Add to Playlist action
+      var addToPlaylistBtn = document.getElementById("addToPlaylistButton");
+      addToPlaylistBtn.addEventListener("click", function (event) {
+          event.preventDefault();
+          // Open the modal to select playlist
+          $('#addToPlaylistModal').modal('show');
+      });
+  
+      // Handle Add to Playlist form submission
+      var addToPlaylistForm = document.getElementById("addToPlaylistForm");
+      addToPlaylistForm.addEventListener("submit", function (event) {
+          event.preventDefault();
+          var selectedPlaylistId = document.getElementById("playlist").value;
+          if (selectedPlaylistId) {
+              addToPlaylistForm.action = "/playlist/" + selectedPlaylistId + "/add_song/";
+              var formData = new FormData(addToPlaylistForm);
+              fetch(addToPlaylistForm.action, {
+                  method: 'POST',
+                  body: formData,
+                  headers: {
+                      'X-Requested-With': 'XMLHttpRequest',
+                      'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+                  }
+              })
+              .then(response => response.json())  // Change to response.json()
+              .then(data => {
+                  var messageDiv = document.getElementById("addToPlaylistMessage");
+                  if (data.message.includes("sudah ada")) {
+                      messageDiv.className = "alert alert-danger";
+                      messageDiv.innerHTML = data.message;
+                      messageDiv.style.display = "block";
+                  } else {
+                      messageDiv.className = "alert alert-success";
+                      messageDiv.innerHTML = data.message;
+                      messageDiv.style.display = "block";
+                      setTimeout(() => {
+                        $('#addToPlaylistModal').modal('hide');
+                        messageDiv.style.display = "none";
+                      }, 3000);
+                  }
+              })
+              .catch(error => {
+                  var messageDiv = document.getElementById("addToPlaylistMessage");
+                  messageDiv.className = "alert alert-danger";
+                  messageDiv.innerHTML = "Lagu sudah ada dalam playlist";
+                  messageDiv.style.display = "block";
+              });
+          } else {
+              var messageDiv = document.getElementById("addToPlaylistMessage");
+              messageDiv.className = "alert alert-danger";
+              messageDiv.innerHTML = "Please select a playlist.";
+              messageDiv.style.display = "block";
+          }
+      });
+  
+      // Download action
+      var downloadBtn = document.getElementById("downloadButton");
+      downloadBtn.addEventListener("click", function (event) {
+          event.preventDefault();
+          var downloadUrl = "{% url 'download_song' song.id %}";
+          fetch(downloadUrl, {
+              method: 'POST',
+              headers: {
+                  'X-Requested-With': 'XMLHttpRequest',
+                  'X-CSRFToken': '{{ csrf_token }}'
+              }
+          })
+          .then(response => response.json())  // Change to response.json()
+          .then(data => {
+              var messageDiv = document.getElementById("message");
+              if (data.message.includes("sudah diunduh")) {
+                  messageDiv.className = "alert alert-danger";
+              } else {
+                  messageDiv.className = "alert alert-success";
+              }
+              messageDiv.innerHTML = data.message;
+              messageDiv.style.display = "block";
+              setTimeout(() => {
+                  messageDiv.style.display = "none";
+              }, 3000);
+          })
+          .catch(error => {
+              var messageDiv = document.getElementById("message");
+              messageDiv.className = "alert alert-danger";
+              messageDiv.innerHTML = "An error occurred while downloading the song.";
+              messageDiv.style.display = "block";
+          });
+      });
+  
+      // Sync range input and hidden input
+      var progressRange = document.getElementById("progressRange");
+      var progressHidden = document.getElementById("progressHidden");
+  
+      progressRange.addEventListener("input", function () {
+          progressHidden.value = progressRange.value;
+      });
+  
+      // Handle Play form submission
+      var playForm = document.getElementById("playForm");
+      playForm.addEventListener("submit", function (event) {
+          var progress = parseInt(progressRange.value, 10);
+          if (progress <= 70) {
+              event.preventDefault();
+              alert("Progress harus lebih dari 70% untuk menghitung play.");
+          } else {
+              progressHidden.value = progress;
+          }
+      });
+  });
+</script>
+{% endblock %}

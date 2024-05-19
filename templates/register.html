@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Registrasi</h2>
+    <!-- Registration Options -->
+    <form id="registerForm" method="post" action="{% url 'register' %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label>Pilih Role:</label>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="role" id="penggunaRadio" value="pengguna" checked>
+                <label class="form-check-label" for="penggunaRadio">Pengguna</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="role" id="labelRadio" value="label">
+                <label class="form-check-label" for="labelRadio">Label</label>
+            </div>
+        </div>
+
+        <!-- Pengguna Registration Form -->
+        <div id="penggunaForm">
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter email">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+            </div>
+            <div class="form-group">
+                <label for="nama">Nama</label>
+                <input type="text" class="form-control" id="nama" name="nama" placeholder="Nama lengkap">
+            </div>
+            <div class="form-group">
+                <label for="gender">Gender</label>
+                <select class="form-control" id="gender" name="gender">
+                    <option value="laki-laki">Laki-laki</option>
+                    <option value="perempuan">Perempuan</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="tempat_lahir">Tempat Lahir</label>
+                <input type="text" class="form-control" id="tempat_lahir" name="tempat_lahir" placeholder="Tempat lahir">
+            </div>
+            <div class="form-group">
+                <label for="tanggal_lahir">Tanggal Lahir</label>
+                <input type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir">
+            </div>
+            <div class="form-group">
+                <label for="kota_asal">Kota Asal</label>
+                <input type="text" class="form-control" id="kota_asal" name="kota_asal" placeholder="Kota asal">
+            </div>
+            <div class="form-group">
+                <label>Role</label><br>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="podcasterCheckbox" name="podcaster" value="podcaster">
+                    <label class="form-check-label" for="podcasterCheckbox">Podcaster</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="artistCheckbox" name="artist" value="artist">
+                    <label class="form-check-label" for="artistCheckbox">Artist</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="songwriterCheckbox" name="songwriter" value="songwriter">
+                    <label class="form-check-label" for="songwriterCheckbox">Songwriter</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Label Registration Form -->
+        <div id="labelForm" style="display: none;">
+            <div class="form-group">
+                <label for="email_label">Email address</label>
+                <input type="email" class="form-control" id="email_label" name="email_label" placeholder="Enter email">
+            </div>
+            <div class="form-group">
+                <label for="password_label">Password</label>
+                <input type="password" class="form-control" id="password_label" name="password_label" placeholder="Password">
+            </div>
+            <div class="form-group">
+                <label for="nama_label">Nama</label>
+                <input type="text" class="form-control" id="nama_label" name="nama_label" placeholder="Nama perusahaan">
+            </div>
+            <div class="form-group">
+                <label for="kontak_label">Kontak</label>
+                <input type="text" class="form-control" id="kontak_label" name="kontak_label" placeholder="Nomor telepon / email">
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+</div>
+
+<!-- JavaScript for hiding/showing registration forms -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Initially hide all forms except the Pengguna form
+        $("#labelForm").hide();
+
+        // Show/hide forms based on radio button selection
+        $("input[name='role']").change(function () {
+            if ($(this).val() === 'pengguna') {
+                $("#penggunaForm").show();
+                $("#labelForm").hide();
+            } else if ($(this).val() === 'label') {
+                $("#labelForm").show();
+                $("#penggunaForm").hide();
+            }
+        });
+    });
+</script>
+{% endblock %}

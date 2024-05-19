@@ -1,0 +1,54 @@
+{% extends 'base_a&s.html' %}
+{% block content %}
+{% include 'navbar_label.html' %}
+<div class="container mt-5">
+    <div class="mx-auto my-1">    
+        <h2 class="mx-auto">Cek Royalti</h2>
+    </div>
+    <div id="user-royalti">
+
+    </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Dummy data for playlists
+    var royalties = [
+      { id: 1, judulLagu: "Lagu 1", judulAlbum:"Album A", totalPlay: 3, totalDownload: 8, totalRoyalti: 100000},
+      { id: 2, judulLagu: "Lagu 2", judulAlbum:"Album B", totalPlay: 2, totalDownload: 4, totalRoyalti: 100000},
+    ];
+
+    // Function to render playlists
+    function renderRoyalties() {
+      var userRoyalti = document.getElementById("user-royalti");
+      if (royalties.length > 0) {
+        var royaltiesHTML =
+          "<table class='table music-table table-bordered'><thead><tr><th>Judul Lagu</th><th>Judul Album</th><th>Total Play</th><th>Total Download</th><th>Total Royalti</th></tr></thead><tbody>";
+        royalties.forEach(function (royalty) {
+          royaltiesHTML +=
+            "<tr><td>" +
+            royalty.judulLagu +
+            "</td><td>" +
+            royalty.judulAlbum +
+            "</td><td>" +
+            royalty.totalPlay +
+            "</td><td>" +
+            royalty.totalDownload +
+            "</td><td> Rp " +
+            royalty.totalRoyalti +
+            "</td></tr>";
+        });
+        royaltiesHTML += "</tbody></table>";
+        userRoyalti.innerHTML = royaltiesHTML;
+      } else {
+        userRoyalti.innerHTML = "<p>Anda Belum Memiliki Royalti</p>";
+      }
+    }
+
+    // Initial rendering of playlists
+    renderRoyalties();
+
+  });
+  
+</script>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-1 card playlist-card">
+  <div class="mx-auto my-1">    
+      <h2 class="mx-auto">List Lagu</h2>
+  </div>
+  <div class="mx-auto my-1">    
+    <h2 class="mx-auto">Album: {{ album_nama }}</h2>
+  </div>
+  <div id="album-songs">
+    {% if not songs %}
+      <h4> Anda belum memiliki royalti </h4>
+    {% else %}
+      <table class='table music-table table-bordered'>
+        <thead>
+          <tr>
+            <th>Judul</th>
+            <th>Durasi</th>
+            <th>Total Play</th>
+            <th>Total Download</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for song in songs %}
+            <tr>
+              <td>{{ song.judul }}</td>
+              <td>{{ song.durasi }}</td>
+              <td>{{ song.total_play }}</td>
+              <td>{{ song.total_download }}</td>
+              <td>
+                <a href="{% url 'song_detail' song.id %}" class="btn btn-primary">Lihat Detail</a> 
+                <form method="post" action="{% url 'remove_song' album_id song.id %}" style="display: inline;">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-warning">Hapus</button>
+                </form>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
+  </div>
+  <div>
+    <a href="{% url "list_album" %}" class="mx-auto my-2 btn btn-secondary">
+      Kembali
+    </a>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container m-0 card playlist-card">
+  <div class="mx-auto my-3">    
+    <h2 class="mx-auto">List Album</h2>
+  </div>
+  <div id="user-album">
+    {% if not albums %}
+        <h4> Anda belum memiliki album </h4>
+    {% else %}
+      <table class='table music-table table-bordered'>
+        <thead>
+          <tr>
+            <th>Judul</th>
+            <th>Label</th>
+            <th>Jumlah Lagu</th>
+            <th>Total Durasi</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for album in albums %}
+            <tr>
+              <td>{{ album.judul }}</td>
+              <td>{{ album.nama }}</td>
+              <td>{{ album.jumlah_lagu }}</td>
+              <td>{{ album.total_durasi }}</td>
+              <td>
+                <a class="btn btn-primary" href="{% url 'list_song' album.id %}" >Lihat Daftar Lagu</a> 
+                {% if not is_label %}
+                  <a class="btn btn-success" href="{% url 'create_song' album.id %}" >Tambah Lagu</a>   
+                {% endif %}
+                <form method="post" action="{% url 'remove_album' album.id %}" style="display: inline;">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-danger">Hapus</button>
+                </form>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
+  </div>
+  <div>
+    <a href="{% url 'create_album' %}" class="mx-auto my-2 btn btn-success" type="submit">
+      Create New Album!
+    </a>
+    <a href="{% url "dashboard" %}" class="mx-auto my-2 btn btn-secondary">
+      Kembali
+    </a>
+  </div>
+</div>
+{% endblock %}

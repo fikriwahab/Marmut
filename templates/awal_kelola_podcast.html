@@ -1,0 +1,30 @@
+{% extends 'base.html' %} {% block content %}
+<style>
+  .button {
+    background-color: #025e2d;
+    border-color: #00d061;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    display: inline-block;
+    text-decoration: none;
+  }
+  .button:hover {
+    background-color: #04b35b;
+    border-color: #04b35b;
+  }
+</style>
+<div class="container">
+  <h1 class="text-center mt-4 mb-5">Kelola Podcast</h1>
+  <div class="text-center">
+    {% if is_podcaster %}
+    <a href="{% url 'create_podcast' %}" class="btn button">Create Podcast</a>
+    {% endif %}
+    <a href="{% url 'list_podcast' %}" class="btn button">List Podcast</a>
+  </div>
+</div>
+{% endblock %}

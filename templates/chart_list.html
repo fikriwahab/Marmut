@@ -1,0 +1,88 @@
+{% extends 'base.html' %} {% block content %}
+<style>
+  #chartListContainer {
+    display: flex;
+    justify-content: center;
+  }
+  #chartDetailContainer {
+    display: none;
+  }
+  .list-group-item {
+    background: #008b4f;
+    border-color: #ffffff;
+    color: white;
+    border-width: 3px;
+  }
+  .lihat-button {
+    background-color: #025e2d; /* Warna latar belakang */
+    border-color: #025e2d; /* Warna border */
+    color: white;
+  }
+  .lihat-button:hover {
+    background-color: #04b35b; /* Warna latar belakang saat hover */
+    border-color: #025e2d; /* Warna border saat hover */
+  }
+  .kembali-button {
+    background-color: white; /* Warna latar belakang */
+    color: black;
+    display: block;
+    margin: 20px auto; /* Pusatkan tombol */
+  }
+  .kembali-button:hover {
+    background-color: #cbcbcb; /* Warna latar belakang saat hover */
+    border-color: #000000; /* Warna border saat hover */
+  }
+  th,
+  td {
+    color: #fff;
+    border: 1px solid #fff; /* Add border */
+    padding: 8px; /* Add padding */
+  }
+  th {
+    background-color: #000;
+  }
+  table {
+    width: 80%; /* Anda bisa menyesuaikan lebar tabel */
+    margin: 0 auto; /* Pusatkan tabel */
+  }
+</style>
+
+<div class="container">
+  <h1 class="text-center mt-4 mb-5">Chart List</h1>
+  <div id="chartListContainer">
+    <table class="min-w-full bg-[#008b4f] rounded-lg overflow-hidden">
+      <thead class="bg-[#008b4f] text-white">
+        <tr>
+          <th class="text-left py-3 px-4 uppercase font-semibold text-sm">
+            Tipe
+          </th>
+          <th class="text-left py-3 px-4 uppercase font-semibold text-sm">
+            Actions
+          </th>
+        </tr>
+      </thead>
+      <tbody class="text-gray-400 bg-[#382e47]">
+        {% for chart in charts %}
+        <tr class="text-white">
+          <td class="py-3 px-4">{{ chart.tipe }}</td>
+          <td class="py-3 px-4">
+            <a
+              href="{% url 'chart_details' %}?tipe_top={{ chart.tipe }}"
+              class="btn lihat-button"
+              >Lihat Daftar Lagu</a
+            >
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div id="chartDetailContainer"></div>
+  <div class="mt-5">
+    <center>
+      <a href="{% url 'dashboard' %}" class="btn kembali-button">Kembali</a>
+    </center>
+  </div>
+</div>
+
+{% endblock %}
